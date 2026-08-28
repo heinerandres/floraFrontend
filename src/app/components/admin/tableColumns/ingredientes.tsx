@@ -3,7 +3,10 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { IIngrediente } from "@/types/ingrediente";
 
-export const IngredientesColumns: ColumnDef<IIngrediente>[] = [
+export const IngredientesColumns = (
+  onEditar: (ingrediente: IIngrediente) => void,
+  onEliminar: (ingrediente: IIngrediente) => void
+): ColumnDef<IIngrediente>[] => [
   {
     accessorKey: "nombre",
     header: "Nombre",
@@ -12,13 +15,13 @@ export const IngredientesColumns: ColumnDef<IIngrediente>[] = [
     id: "editar",
     header: "Editar",
     cell: ({ row }) => {
-      const categoria = row.original;
+      const ingrediente = row.original;
 
       return (
         <button
           className="text-gray-600 hover:text-acento cursor-pointer flex"
           onClick={() => {
-            console.log("Editar:", categoria._id);
+            onEditar(ingrediente);
           }}
         >
           <Pencil size={18} strokeWidth={1.5} className="mr-2"/>
@@ -31,13 +34,13 @@ export const IngredientesColumns: ColumnDef<IIngrediente>[] = [
     id: "eliminar",
     header: "Eliminar",
     cell: ({ row }) => {
-      const categoria = row.original;
+      const ingrediente = row.original;
 
       return (
         <button
           className="text-gray-600 hover:text-red-500 cursor-pointer flex"
           onClick={() => {
-            console.log("Eliminar:", categoria._id);
+            console.log("Eliminar:", ingrediente._id);
           }}
         >
           <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

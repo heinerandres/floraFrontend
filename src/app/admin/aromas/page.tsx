@@ -2,10 +2,8 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
-import { FlaskConical } from "lucide-react";
 import { ObtenerAromas } from '@/services/api/server/aromas';
-import { AromasColumns } from "@/app/components/admin/tableColumns/aromas";
-import { IAromas } from "@/types/Aromas";
+import { IAromas } from "@/types/aromas";
 
 
 
@@ -27,12 +25,11 @@ export default async function AromasPage() {
             {errorMsg && <p className="text-red-500">{errorMsg}</p>}
             <ListPage 
                 titulo = "Aromas"
-                icon = {FlaskConical}
+                icon = "flaskConical"
                 subtitulo = "Administra los aromas disponibles en Floraphine."
                 placeholderBuscar="Buscar aroma"
                 textoBoton="Agregar Aroma"
                 data={aromas}
-                columns={AromasColumns}
             />
             
         </div>

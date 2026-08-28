@@ -3,9 +3,7 @@
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
 import { ICategoria } from "@/types/categoria";
-import { Tag } from "lucide-react";
 import {ObtenerCategorias} from '@/services/api/server/categorias';
-import { CategoriaColumns } from "@/app/components/admin/tableColumns/categorias";
 
 
 export default async function CategoriasPage() {
@@ -16,6 +14,9 @@ export default async function CategoriasPage() {
   if(respuesta.ok) categorias = respuesta.categorias;
   else errorMsg = respuesta.msg;
 
+
+  
+
     return (
         <div className="flex-1">
             <BreadCrumb items={[
@@ -23,15 +24,14 @@ export default async function CategoriasPage() {
                 { label: "Categorías", href: "/admin/categorias" },
                 /* { label: "Nuevo producto", href: "/productos/nuevo" }, */
             ]}/>
-            {errorMsg && <p className="text-red-500">{errorMsg}</p>}
+            {errorMsg && <p className="text-red-500">{ errorMsg }</p>}
             <ListPage 
                 titulo = "Categorías"
-                icon = {Tag}
+                icon = "tag"
                 subtitulo = "Administra las categorías disponibles en Floraphine."
                 placeholderBuscar="Buscar categoría"
                 textoBoton="Agregar Categoría"
-                data={categorias}
-                columns={CategoriaColumns}
+                data={ categorias }
             />
             
         </div>

@@ -3,7 +3,10 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ITiposPiel } from "@/types/tiposPiel";
 
-export const TiposPielColumns: ColumnDef<ITiposPiel>[] = [
+export const TiposPielColumns = (
+  onEditar: (tipoPiel: ITiposPiel) => void,
+  onEliminar: (tipoPiel: ITiposPiel) => void
+): ColumnDef<ITiposPiel>[] => [
   {
     accessorKey: "nombre",
     header: "Nombre",
@@ -12,13 +15,13 @@ export const TiposPielColumns: ColumnDef<ITiposPiel>[] = [
     id: "editar",
     header: "Editar",
     cell: ({ row }) => {
-      const categoria = row.original;
+      const tipoPiel = row.original;
 
       return (
         <button
           className="text-gray-600 hover:text-acento cursor-pointer flex"
           onClick={() => {
-            console.log("Editar:", categoria._id);
+            onEditar(tipoPiel);
           }}
         >
           <Pencil size={18} strokeWidth={1.5} className="mr-2"/>
@@ -31,13 +34,13 @@ export const TiposPielColumns: ColumnDef<ITiposPiel>[] = [
     id: "eliminar",
     header: "Eliminar",
     cell: ({ row }) => {
-      const categoria = row.original;
+      const tipoPiel = row.original;
 
       return (
         <button
           className="text-gray-600 hover:text-red-500 cursor-pointer flex"
           onClick={() => {
-            console.log("Eliminar:", categoria._id);
+            console.log("Eliminar:", tipoPiel._id);
           }}
         >
           <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

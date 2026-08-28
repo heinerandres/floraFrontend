@@ -3,7 +3,10 @@ import { Pencil, Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { ICategoria } from "@/types/categoria";
 
-export const CategoriaColumns: ColumnDef<ICategoria>[] = [
+export const CategoriaColumns = (
+  onEditar: (categoria: ICategoria) => void,
+  onEliminar: (categoria: ICategoria) => void,
+): ColumnDef<ICategoria>[] => [
   {
     accessorKey: "nombre",
     header: "Nombre",
@@ -18,7 +21,7 @@ export const CategoriaColumns: ColumnDef<ICategoria>[] = [
         <button
           className="text-gray-600 hover:text-acento cursor-pointer flex"
           onClick={() => {
-            console.log("Editar:", categoria._id);
+            onEditar(categoria);
           }}
         >
           <Pencil size={18} strokeWidth={1.5} className="mr-2"/>

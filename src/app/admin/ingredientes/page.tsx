@@ -2,7 +2,6 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
-import { TestTubeDiagonal } from "lucide-react";
 import {ObtenerIngredientes} from '@/services/api/server/ingredientes';
 import { IIngrediente } from "@/types/ingrediente";
 import { IngredientesColumns } from "@/app/components/admin/tableColumns/ingredientes";
@@ -26,12 +25,11 @@ export default async function IngredientesPage() {
             {errorMsg && <p className="text-red-500">{errorMsg}</p>}
             <ListPage 
                 titulo = "Ingredientes"
-                icon = {TestTubeDiagonal}
+                icon = "testTubeDiagonal"
                 subtitulo = "Administra los ingredientes disponibles en Floraphine."
                 placeholderBuscar="Buscar ingrediente"
                 textoBoton="Agregar Ingrediente"
                 data={ingredientes}
-                columns={IngredientesColumns}
             />
             
         </div>

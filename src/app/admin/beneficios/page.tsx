@@ -2,9 +2,7 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
-import { Heart } from "lucide-react";
 import {ObtenerBeneficios} from '@/services/api/server/beneficios';
-import { BeneficiosColumns } from "@/app/components/admin/tableColumns/beneficios";
 import { IBeneficios } from "@/types/beneficios";
 
 
@@ -26,12 +24,11 @@ export default async function BeneficiosPage() {
             {errorMsg && <p className="text-red-500">{errorMsg}</p>}
             <ListPage 
                 titulo = "Beneficios"
-                icon = {Heart}
+                icon = "heart"
                 subtitulo = "Administra los beneficios disponibles en Floraphine."
                 placeholderBuscar="Buscar beneficio"
                 textoBoton="Agregar Beneficio"
                 data={beneficios}
-                columns={BeneficiosColumns}
             />
             
         </div>
