@@ -3,14 +3,14 @@
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
 import { ICategoria } from "@/types/categoria";
-import {ObtenerCategorias} from '@/services/api/server/categorias';
+import {obtenerCategorias} from '@/services/api/server/categorias';
 
 
 export default async function CategoriasPage() {
   let errorMsg = null;
   let categorias : ICategoria[] | [] = [];
 
-  const respuesta = await ObtenerCategorias();
+  const respuesta = await obtenerCategorias();
   if(respuesta.ok) categorias = respuesta.categorias;
   else errorMsg = respuesta.msg;
 

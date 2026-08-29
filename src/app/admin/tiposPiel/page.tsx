@@ -2,7 +2,7 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
-import {ObtenerTiposPiel} from '@/services/api/server/tiposPiel';
+import {obtenerTiposPiel} from '@/services/api/server/tiposPiel';
 import { ITiposPiel } from "@/types/tiposPiel";
 
 
@@ -10,7 +10,7 @@ export default async function TiposPielPage() {
   let errorMsg = null;
   let tiposPiel : ITiposPiel[] | [] = [];
 
-  const respuesta = await ObtenerTiposPiel();
+  const respuesta = await obtenerTiposPiel();
   if(respuesta.ok) tiposPiel = respuesta.tiposPiel;
   else errorMsg = respuesta.msg;
 

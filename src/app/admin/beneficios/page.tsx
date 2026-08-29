@@ -2,7 +2,7 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
-import {ObtenerBeneficios} from '@/services/api/server/beneficios';
+import {obtenerBeneficios} from '@/services/api/server/beneficios';
 import { IBeneficios } from "@/types/beneficios";
 
 
@@ -10,7 +10,7 @@ export default async function BeneficiosPage() {
   let errorMsg = null;
   let beneficios : IBeneficios[] | [] = [];
 
-  const respuesta = await ObtenerBeneficios();
+  const respuesta = await obtenerBeneficios();
   if(respuesta.ok) beneficios = respuesta.beneficios;
   else errorMsg = respuesta.msg;
 

@@ -5,11 +5,16 @@ import type { ICategoria } from "@/types/categoria";
 
 export const CategoriaColumns = (
   onEditar: (categoria: ICategoria) => void,
-  onEliminar: (categoria: ICategoria) => void,
+  onEliminar: (categoria: ICategoria) => Promise<void>,
 ): ColumnDef<ICategoria>[] => [
   {
     accessorKey: "nombre",
     header: "Nombre",
+    cell: ({ getValue }) => (
+      <span className="font-semibold ">
+        {getValue() as string}
+      </span>
+    ),
   },
   {
     id: "editar",
@@ -40,7 +45,7 @@ export const CategoriaColumns = (
         <button
           className="text-gray-600 hover:text-red-500 cursor-pointer flex"
           onClick={() => {
-            console.log("Eliminar:", categoria._id);
+            onEliminar(categoria);
           }}
         >
           <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

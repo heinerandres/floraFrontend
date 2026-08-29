@@ -1,6 +1,5 @@
 'use client';
 import { FlaskConical, Heart, HeartHandshake, Leaf, Plus, Search, Tag, TestTubeDiagonal } from "lucide-react";
-import { type LucideIcon } from "lucide-react";
 import { TableComponent } from "./TableComponent";
 import { ColumnDef } from "@tanstack/react-table";
 import Modal from "@/utilities/modal";
@@ -15,6 +14,13 @@ import { AromasColumns } from "./tableColumns/aromas";
 import { BeneficiosColumns } from "./tableColumns/beneficios";
 import { IngredientesColumns } from "./tableColumns/ingredientes";
 import { TiposPielColumns } from "./tableColumns/tiposPiel";
+import { crearCategoria, editarCategoria, eliminarCategoria } from "@/services/api/server/categorias";
+import { useRouter } from 'next/navigation';
+import { crearAroma, editarAroma, eliminarAroma } from "@/services/api/server/aromas";
+import { crearBeneficios, editarBeneficio, eliminarBeneficio } from "@/services/api/server/beneficios";
+import { crearIngrediente, editarIngrediente, eliminarIngrediente } from "@/services/api/server/ingredientes";
+import { crearTiposPiel, editarTiposPiel, eliminarTipoPiel } from "@/services/api/server/tiposPiel";
+import Swal from "sweetalert2";
 
 type Props<T> = {
   titulo: string;
@@ -35,20 +41,15 @@ const icons = {
 };
 
 export const ListPage = <T,> ({titulo, icon, subtitulo, placeholderBuscar, textoBoton, data} : Props<T>) => {
+    const router = useRouter();
     const Icon = icons[icon];
     const [modalOpen, setModalOpen] = useState(false);
     const [tipo, setTipo] = useState("");
+    const [_nombre, set_Nombre] = useState("");
+    const [filtro, setFiltro] = useState("");
     const [successFunction, setSuccessFunction] =
         useState<((nombre: string) => void) | undefined>(undefined);
 
-
-    /* setSuccessFunction(() => {
-        console.log("Operación exitosa");
-    }); */
-
-    // Elemento seleccionado para editar
-  const [elementoSeleccionado, setElementoSeleccionado] =
-    useState<T | null>(null);
     /*
     * =========================
     * INSERTAR
@@ -57,33 +58,43 @@ export const ListPage = <T,> ({titulo, icon, subtitulo, placeholderBuscar, texto
     const handleInsertar = () => {
         switch (titulo) {
             case "Categorías":
-                setSuccessFunction(() => (nombre: string) => {
-                    console.log("Insertar categoría:", nombre);
+                setSuccessFunction( () => async (nombre: string) => {
+                    const respuesta = await crearCategoria({nombre});
+                    if (respuesta.ok) router.push('/admin/categorias');
+                    else console.log(respuesta);
                 });
                 break;
             case "Aromas":
-                setSuccessFunction(() => (nombre: string) => {
-                    console.log("Insertar Aroma:", nombre);
+                setSuccessFunction(() => async (nombre: string) => {
+                    const respuesta = await crearAroma({nombre});
+                    if (respuesta.ok) router.push('/admin/aromas');
+                    else console.log(respuesta);
                 });
                 break;
             case "Beneficios":
-                setSuccessFunction(() => (nombre: string) => {
-                    console.log("Insertar Beneficio:", nombre);
+                setSuccessFunction(() => async (nombre: string) => {
+                    const respuesta = await crearBeneficios({nombre});
+                    if (respuesta.ok) router.push('/admin/beneficios');
+                    else console.log(respuesta);
                 });
                 break;
             case "Ingredientes":
-                setSuccessFunction(() => (nombre: string) => {
-                    console.log("Insertar Ingrediente:", nombre);
+                setSuccessFunction(() => async (nombre: string) => {
+                    const respuesta = await crearIngrediente({nombre});
+                    if (respuesta.ok) router.push('/admin/ingredientes');
+                    else console.log(respuesta);
                 });
                 break;
             case "Tipos de Piel":
-                setSuccessFunction(() => (nombre: string) => {
-                    console.log("Insertar TipoPiel:", nombre);
+                setSuccessFunction(() => async (nombre: string) => {
+                    const respuesta = await crearTiposPiel({nombre});
+                    if (respuesta.ok) router.push('/admin/tiposPiel');
+                    else console.log(respuesta);
                 });
                 break;
         }
-        setElementoSeleccionado(null);
         setTipo("Agregar");
+        set_Nombre("");
         setModalOpen(true);
     };
 
@@ -93,53 +104,56 @@ export const ListPage = <T,> ({titulo, icon, subtitulo, placeholderBuscar, texto
     * =========================
     */
     const handleEditar = (item: T) => {
-        setElementoSeleccionado(item);
-
         switch (titulo) {
             case "Categorías": 
-                setSuccessFunction(() => (nombre: string) => {
+                setSuccessFunction(() => async (nombre: string) => {
                     const categoria = item as ICategoria;
-
-                    console.log("Editar categoría:", categoria._id);
-                    console.log("nombre", nombre);
+                    const respuesta = await editarCategoria({_id: categoria._id, nombre});
+                    if (respuesta.ok) router.push('/admin/categorias');
+                    else console.log(respuesta);
                 });
                 break;
             case "Aromas": {
-                setSuccessFunction(() => (nombre: string) => {
+                setSuccessFunction(() => async (nombre: string) => {
                     const aroma = item as IAromas;
-                    console.log("Editar aroma:", aroma._id);
-                    console.log("nombre", nombre);
+                    const respuesta = await editarAroma({_id: aroma._id, nombre});
+                    if (respuesta.ok) router.push('/admin/aromas');
+                    else console.log(respuesta);
                 });
                 break;
             }
             case "Beneficios": {
-                setSuccessFunction(() => (nombre: string) => {
+                setSuccessFunction(() => async (nombre: string) => {
                     const beneficio = item as IBeneficios;
-                    console.log("Editar beneficio:", beneficio._id);
-                    console.log("nombre", nombre);
+                    const respuesta = await editarBeneficio({_id: beneficio._id, nombre});
+                    if (respuesta.ok) router.push('/admin/beneficios');
+                    else console.log(respuesta);
                 });
                 break;
             }
             case "Ingredientes": {
-                setSuccessFunction(() => (nombre: string) => {
+                setSuccessFunction(() => async (nombre: string) => {
                     const ingrediente = item as IIngrediente;
-                    console.log("Editar ingrediente:", ingrediente._id);
-                    console.log("nombre", nombre);
+                    const respuesta = await editarIngrediente({_id: ingrediente._id, nombre});
+                    if (respuesta.ok) router.push('/admin/ingredientes');
+                    else console.log(respuesta);
                 });
                 break;
             }
 
             case "Tipos de Piel": {
-                setSuccessFunction(() => (nombre: string) => {
+                setSuccessFunction(() => async (nombre: string) => {
                     const tipoPiel = item as ITiposPiel;
-                    console.log("Editar tipo de piel:", tipoPiel._id);
-                    console.log("nombre", nombre);
+                    const respuesta = await editarTiposPiel({_id: tipoPiel._id, nombre});
+                    if (respuesta.ok) router.push('/admin/tiposPiel');
+                    else console.log(respuesta);
                 });
                 break;
             }
         }
-        setModalOpen(true);
+        set_Nombre((item as { nombre: string }).nombre);
         setTipo("Editar");
+        setModalOpen(true);
     };
 
     /*
@@ -147,45 +161,108 @@ export const ListPage = <T,> ({titulo, icon, subtitulo, placeholderBuscar, texto
    * ELIMINAR
    * =========================
    */
-  const handleEliminar = (item: T) => {
+  const handleEliminar = async (item: T) => {
     switch (titulo) {
-      case "Categorias": {
-        const categoria = item as ICategoria;
+      case "Categorías": {
+            const categoria = item as ICategoria;
+            const result = await Swal.fire({
+                title: "Eliminar",
+                text: `Está seguro que desea eliminar la Categoría ${categoria.nombre}`,
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true,
+                confirmButtonText: "Si, eliminar",
+                cancelButtonText: "Cancelar",
+            });
 
-        console.log("Eliminar categoría:", categoria._id);
+            if (result.isConfirmed) {
+                const respuesta = await eliminarCategoria({_id: categoria._id});
+                if (respuesta.ok) router.push('/admin/categorias');
+                else console.log(respuesta);
+            }
         break;
       }
 
       case "Aromas": {
-        const aroma = item as IAromas;
+            const aroma = item as IAromas;
+            const result = await Swal.fire({
+                title: "Eliminar",
+                text: `Está seguro que desea eliminar el Aroma ${aroma.nombre}`,
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true,
+                confirmButtonText: "Si, eliminar",
+                cancelButtonText: "Cancelar",
+            });
 
-        console.log("Eliminar aroma:", aroma._id);
+            if (result.isConfirmed) {
+                const respuesta = await eliminarAroma({_id: aroma._id});
+                if (respuesta.ok) router.push('/admin/aromas');
+                else console.log(respuesta);
+            }
         break;
       }
 
       case "Beneficios": {
-        const beneficio = item as IBeneficios;
+            const beneficio = item as IBeneficios;
+            const result = await Swal.fire({
+                title: "Eliminar",
+                text: `Está seguro que desea eliminar el Beneficio ${beneficio.nombre}`,
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true,
+                confirmButtonText: "Si, eliminar",
+                cancelButtonText: "Cancelar",
+            });
 
-        console.log("Eliminar beneficio:", beneficio._id);
+            if (result.isConfirmed) {
+                const respuesta = await eliminarBeneficio({_id: beneficio._id});
+                if (respuesta.ok) router.push('/admin/beneficios');
+                else console.log(respuesta);
+            }
         break;
       }
 
       case "Ingredientes": {
-        const ingrediente = item as IIngrediente;
+            const ingrediente = item as IIngrediente;
+            const result = await Swal.fire({
+                title: "Eliminar",
+                text: `Está seguro que desea eliminar el Ingrediente ${ingrediente.nombre}`,
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true,
+                confirmButtonText: "Si, eliminar",
+                cancelButtonText: "Cancelar",
+            });
 
-        console.log("Eliminar ingrediente:", ingrediente._id);
+            if (result.isConfirmed) {
+                const respuesta = await eliminarIngrediente({_id: ingrediente._id});
+                if (respuesta.ok) router.push('/admin/ingredientes');
+                else console.log(respuesta);
+            }
         break;
       }
 
-      case "TiposPiel": {
-        const tipoPiel = item as ITiposPiel;
+      case "Tipos de Piel": {
+            const tipoPiel = item as ITiposPiel;
+            const result = await Swal.fire({
+                title: "Eliminar",
+                text: `Está seguro que desea eliminar el Tipo de Piel ${tipoPiel.nombre}`,
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons: true,
+                confirmButtonText: "Si, eliminar",
+                cancelButtonText: "Cancelar",
+            });
 
-        console.log("Eliminar tipo de piel:", tipoPiel._id);
+            if (result.isConfirmed) {
+                const respuesta = await eliminarTipoPiel({_id: tipoPiel._id});
+                if (respuesta.ok) router.push('/admin/tiposPiel');
+                else console.log(respuesta);
+            }
         break;
       }
     }
-    setModalOpen(true);
-    setTipo("Editar");
   };
 
    /*
@@ -198,31 +275,31 @@ export const ListPage = <T,> ({titulo, icon, subtitulo, placeholderBuscar, texto
       case "Categorías":
         return CategoriaColumns(
           handleEditar as (item: ICategoria) => void,
-          handleEliminar as (item: ICategoria) => void,
+          handleEliminar as (item: ICategoria) => Promise<void>,
         ) as ColumnDef<T, unknown>[];
 
       case "Aromas":
         return AromasColumns(
           handleEditar as (item: IAromas) => void,
-          handleEliminar as (item: IAromas) => void
+          handleEliminar as (item: IAromas) => Promise<void>,
         ) as ColumnDef<T, unknown>[];
 
       case "Beneficios":
         return BeneficiosColumns(
           handleEditar as (item: IBeneficios) => void,
-          handleEliminar as (item: IBeneficios) => void
+          handleEliminar as (item: IBeneficios) => Promise<void>,
         ) as ColumnDef<T, unknown>[];
 
       case "Ingredientes":
         return IngredientesColumns(
           handleEditar as (item: IIngrediente) => void,
-          handleEliminar as (item: IIngrediente) => void
+          handleEliminar as (item: IIngrediente) => Promise<void>,
         ) as ColumnDef<T, unknown>[];
 
       case "Tipos de Piel":
         return TiposPielColumns(
           handleEditar as (item: ITiposPiel) => void,
-          handleEliminar as (item: ITiposPiel) => void
+          handleEliminar as (item: ITiposPiel) => Promise<void>,
         ) as ColumnDef<T, unknown>[];
 
       default:
@@ -244,6 +321,8 @@ export const ListPage = <T,> ({titulo, icon, subtitulo, placeholderBuscar, texto
                     <div className="relative w-90">
                         <input
                             type="text"
+                            value={filtro}
+                            onChange={(e) => setFiltro(e.target.value)}
                             placeholder={placeholderBuscar}
                             className="w-full rounded-md border border-gray-200 py-3 pl-4 pr-10 text-sm outline-none focus:border-acento placeholder:text-gray-700"
                         />
@@ -266,13 +345,18 @@ export const ListPage = <T,> ({titulo, icon, subtitulo, placeholderBuscar, texto
                 </div>
             </div>
 
-            <TableComponent data={data} columns={getColumns()} />
+            <TableComponent 
+                data={data} 
+                columns={getColumns()}
+                filtro={filtro}
+            />
             <Modal 
                 tipo={titulo}
                 entidad={tipo}
                 open={modalOpen}
                 onOpenChange={setModalOpen}
                 onSuccess={successFunction}
+                _nombre={_nombre}
             />
         </div>
     )

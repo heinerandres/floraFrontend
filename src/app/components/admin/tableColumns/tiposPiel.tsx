@@ -5,11 +5,16 @@ import type { ITiposPiel } from "@/types/tiposPiel";
 
 export const TiposPielColumns = (
   onEditar: (tipoPiel: ITiposPiel) => void,
-  onEliminar: (tipoPiel: ITiposPiel) => void
+  onEliminar: (tipoPiel: ITiposPiel) => Promise<void>
 ): ColumnDef<ITiposPiel>[] => [
   {
     accessorKey: "nombre",
     header: "Nombre",
+    cell: ({ getValue }) => (
+      <span className="font-semibold ">
+        {getValue() as string}
+      </span>
+    ),
   },
   {
     id: "editar",
@@ -40,7 +45,7 @@ export const TiposPielColumns = (
         <button
           className="text-gray-600 hover:text-red-500 cursor-pointer flex"
           onClick={() => {
-            console.log("Eliminar:", tipoPiel._id);
+            onEliminar(tipoPiel);
           }}
         >
           <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

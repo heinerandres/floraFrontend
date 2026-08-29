@@ -1,7 +1,7 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ModalProps {
   entidad: string;
@@ -9,6 +9,7 @@ interface ModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSuccess?: (nombre: string) => void;
+  _nombre?: string;
 }
 
 export default function Modal({
@@ -17,8 +18,12 @@ export default function Modal({
   open,
   onOpenChange,
   onSuccess,
+  _nombre
 }: ModalProps) {
-    const [nombre, setNombre] = useState("");
+    const [nombre, setNombre] = useState(_nombre ?? "");
+    useEffect(() => {
+        setNombre(_nombre ?? "");
+    }, [_nombre]);
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -36,6 +41,7 @@ export default function Modal({
                 onSubmit={(e) => {
                     e.preventDefault();
                     onSuccess?.(nombre);
+                    onOpenChange(false);
                 }}
             >
 
@@ -61,7 +67,7 @@ export default function Modal({
                 <Dialog.Close asChild>
                     <button
                     type="button"
-                    className="rounded-md bg-gray-200 px-4 py-2"
+                    className="rounded-md bg-gray-200 px-4 py-2 cursor-pointer"
                     >
                     Cerrar
                     </button>
@@ -69,7 +75,7 @@ export default function Modal({
 
                 <button
                     type="submit"
-                    className="rounded-md bg-blue-600 px-4 py-2 text-white"
+                    className="rounded-md bg-blue-600 px-4 py-2 text-white cursor-pointer"
                 >
                     Guardar
                 </button>

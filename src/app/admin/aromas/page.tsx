@@ -2,7 +2,7 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
-import { ObtenerAromas } from '@/services/api/server/aromas';
+import { obtenerAromas } from '@/services/api/server/aromas';
 import { IAromas } from "@/types/aromas";
 
 
@@ -11,7 +11,7 @@ export default async function AromasPage() {
   let errorMsg = null;
   let aromas : IAromas[] | [] = [];
 
-  const respuesta = await ObtenerAromas();
+  const respuesta = await obtenerAromas();
   if(respuesta.ok) aromas = respuesta.aromas;
   else errorMsg = respuesta.msg;
 

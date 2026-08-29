@@ -2,7 +2,6 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
-import { ProductosColumns } from "@/app/components/admin/tableColumns/productos";
 import { obtenerProductos } from '@/services/api/server/productos';
 import { IProducto } from "@/types/producto";
 

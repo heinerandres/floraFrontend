@@ -2,7 +2,7 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
-import {ObtenerIngredientes} from '@/services/api/server/ingredientes';
+import {obtenerIngredientes} from '@/services/api/server/ingredientes';
 import { IIngrediente } from "@/types/ingrediente";
 import { IngredientesColumns } from "@/app/components/admin/tableColumns/ingredientes";
 
@@ -11,7 +11,7 @@ export default async function IngredientesPage() {
   let errorMsg = null;
   let ingredientes : IIngrediente[] | [] = [];
 
-  const respuesta = await ObtenerIngredientes();
+  const respuesta = await obtenerIngredientes();
   if(respuesta.ok) ingredientes = respuesta.ingredientes;
   else errorMsg = respuesta.msg;
 

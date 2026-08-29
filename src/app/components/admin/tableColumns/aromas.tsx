@@ -5,11 +5,16 @@ import { IAromas } from "@/types/aromas";
 
 export const AromasColumns = (
   onEditar: (aroma: IAromas) => void,
-  onEliminar: (aroma: IAromas) => void
+  onEliminar: (aroma: IAromas) => Promise<void>
 ): ColumnDef<IAromas>[] => [
   {
     accessorKey: "nombre",
     header: "Nombre",
+    cell: ({ getValue }) => (
+      <span className="font-semibold ">
+        {getValue() as string}
+      </span>
+    ),
   },
   {
     id: "editar",
@@ -40,7 +45,7 @@ export const AromasColumns = (
         <button
           className="text-gray-600 hover:text-red-500 cursor-pointer flex"
           onClick={() => {
-            console.log("Eliminar:", aroma._id);
+            onEliminar(aroma);
           }}
         >
           <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

@@ -5,11 +5,16 @@ import type { IBeneficios } from "@/types/beneficios";
 
 export const BeneficiosColumns = (
   onEditar: (beneficio: IBeneficios) => void,
-  onEliminar: (beneficio: IBeneficios) => void
+  onEliminar: (beneficio: IBeneficios) => Promise<void>
 ): ColumnDef<IBeneficios>[] => [
   {
     accessorKey: "nombre",
     header: "Nombre",
+    cell: ({ getValue }) => (
+      <span className="font-semibold ">
+        {getValue() as string}
+      </span>
+    ),
   },
   {
     id: "editar",
@@ -40,7 +45,7 @@ export const BeneficiosColumns = (
         <button
           className="text-gray-600 hover:text-red-500 cursor-pointer flex"
           onClick={() => {
-            console.log("Eliminar:", beneficio._id);
+            onEliminar(beneficio);
           }}
         >
           <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

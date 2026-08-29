@@ -5,11 +5,16 @@ import { IIngrediente } from "@/types/ingrediente";
 
 export const IngredientesColumns = (
   onEditar: (ingrediente: IIngrediente) => void,
-  onEliminar: (ingrediente: IIngrediente) => void
+  onEliminar: (ingrediente: IIngrediente) => Promise<void>
 ): ColumnDef<IIngrediente>[] => [
   {
     accessorKey: "nombre",
     header: "Nombre",
+    cell: ({ getValue }) => (
+      <span className="font-semibold ">
+        {getValue() as string}
+      </span>
+    ),
   },
   {
     id: "editar",
@@ -40,7 +45,7 @@ export const IngredientesColumns = (
         <button
           className="text-gray-600 hover:text-red-500 cursor-pointer flex"
           onClick={() => {
-            console.log("Eliminar:", ingrediente._id);
+            onEliminar(ingrediente);
           }}
         >
           <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

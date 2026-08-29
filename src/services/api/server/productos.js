@@ -16,6 +16,32 @@ export async function obtenerProductoByNombre(data) {
 export async function crearProducto(data) {
   return apiFetch('/api/productos/insertar', {
     method: 'POST',
+    cache: 'no-store',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data)
+  });
+}
+
+export async function editarProducto(data){
+  return apiFetch('/api/productos/editar', {
+    method: 'PUT',
+    cache: 'no-store',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data)
+  });
+}
+
+export async function eliminarProducto(data){
+  return apiFetch('/api/productos/eliminar', {
+    method: 'DELETE',
+    cache: 'no-store',
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data)
   });
 }
