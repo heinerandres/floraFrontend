@@ -75,7 +75,7 @@ export default function Modal({
 
                 <button
                     type="submit"
-                    className="rounded-md bg-blue-600 px-4 py-2 text-white cursor-pointer"
+                    className="rounded-md bg-acento px-4 py-2 text-white cursor-pointer"
                 >
                     Guardar
                 </button>

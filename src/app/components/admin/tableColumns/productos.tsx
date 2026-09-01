@@ -1,7 +1,6 @@
 'use client';
 import { Pencil, Trash2 } from "lucide-react";
 import type { ColumnDef } from "@tanstack/react-table";
-import type { ICategoria } from "@/types/categoria";
 import { IProducto } from "@/types/producto";
 
 export const ProductosColumns: ColumnDef<IProducto>[] = [

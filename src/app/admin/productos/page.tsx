@@ -2,6 +2,7 @@
 
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { ListPage } from "@/app/components/admin/ListPage";
+import { ProductosListPage } from "@/app/components/admin/productos/ProductosListPage";
 import { obtenerProductos } from '@/services/api/server/productos';
 import { IProducto } from "@/types/producto";
 
@@ -11,9 +12,9 @@ export default async function ProductosPage() {
   let errorMsg = null;
   let productos : IProducto[] | [] = [];
 
-  const respuestaProductos = await obtenerProductos();
-  if(respuestaProductos.ok) productos = respuestaProductos.productos;
-  else errorMsg = respuestaProductos.msg;
+  const respuesta = await obtenerProductos();
+  if(respuesta.ok) productos = respuesta.productos;
+  else errorMsg = respuesta.msg;
 
     return (
         <div className="flex-1">
@@ -22,14 +23,7 @@ export default async function ProductosPage() {
                 { label: "Productos", href: "/productos" },
                 /* { label: "Nuevo producto", href: "/productos/nuevo" }, */
             ]}/>
-            <ListPage 
-                titulo = "Productos"
-                icon = "leaf"
-                subtitulo = "Administra los productos disponibles en Floraphine."
-                placeholderBuscar="Buscar productos"
-                textoBoton="Agregar Productos"
-                data={productos}
-            />
+            <ProductosListPage data={productos}/>
         </div>
     )
 }
