@@ -16,11 +16,13 @@ export default async function ProductosPage() {
   if(respuesta.ok) productos = respuesta.productos;
   else errorMsg = respuesta.msg;
 
+  console.log(productos);
+
     return (
         <div className="flex-1">
             <BreadCrumb items={[
                 { label: "Inicio", href: "/" },
-                { label: "Productos", href: "/productos" },
+                { label: "Productos", href: "/admin/productos" },
                 /* { label: "Nuevo producto", href: "/productos/nuevo" }, */
             ]}/>
             <ProductosListPage data={productos}/>

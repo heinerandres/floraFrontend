@@ -20,25 +20,29 @@ export const ProductosAgregar = ({categorias}: Props) => {
     const [precio, setPrecio] = useState(0);
     const [cantidad, setCantidad] = useState(0);
     const [esDestacado, setDestacado] = useState(false);
-    const [errorMsg, setErrorMsg] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+    const [file1, setFile1] = useState<File | undefined>(undefined);
+    const [img1, setImg1] = useState<string | undefined>(undefined);
     
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const respuesta = await crearProducto(
-            {
-                nombre,
-                slug,
-                categoria,
-                descripcion,
-                precio,
-                cantidad,
-                esDestacado
-            }
-        );
+        const formData = new FormData();
+
+        formData.append("nombre", nombre);
+        formData.append("slug", slug);
+        formData.append("categoria", categoria);
+        formData.append("descripcion", descripcion);
+        formData.append("precio", String(precio));
+        formData.append("cantidad", String(cantidad));
+        formData.append("esDestacado", String(esDestacado));
+        if(file1) formData.append("img1", file1);
+
+
+        const respuesta = await crearProducto(formData);
         if(respuesta.ok) router.replace("/admin/productos");
-        else setErrorMsg(respuesta.msg);
+        else setErrorMsg(JSON.stringify(respuesta));
     }
 
     const generarSlug = (texto: string) => {
@@ -56,6 +60,15 @@ export const ProductosAgregar = ({categorias}: Props) => {
         router.replace("/admin/productos")
     }
 
+    const handleImage = (
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const file = e.target.files?.[0];
+        if(!file) return;
+        setFile1(e.target.files?.[0] || undefined);
+        setImg1(URL.createObjectURL(file));
+    }
+
     return(
         <form onSubmit={handleSubmit} className="px-20">
             {errorMsg && <p className="text-red-500">{ errorMsg }</p>}
@@ -66,17 +79,33 @@ export const ProductosAgregar = ({categorias}: Props) => {
                             <p className="text-lg font-semibold">Imagen del producto*</p>
                         </div>
                         <p className="text-sm">Agrega una imagen que represente el producto.</p>
-                        <div className="relative flex flex-col items-center justify-center border border-dashed border-acento rounded-lg h-90 mt-5">
-                            <ImagePlus size={55}/>
-                            <p>Arrastra tu imágen hasta aquí</p>
-                            <p>o haz click para seleccionar</p>
-                            <div className="absolute flex gap-2 bottom-0 left-0">
-                                <div className="border w-20 h-20">
+                        <label htmlFor="img1" className="relative flex flex-col items-center justify-center border border-dashed border-acento rounded-lg h-90 mt-5 cursor-pointer">
+                            {
+                                !img1 && 
+                                <>
+                                    <ImagePlus size={55}/>
+                                    <p>Arrastra tu imágen hasta aquí</p>
+                                    <p>o haz click para seleccionar</p>
+                                </>
+                            }
+                            {
+                                img1 && <img className="h-full w-full" src={img1}/>
+                            }
+                            
 
-                                </div>
+                            <input
+                                id="img1"
+                                minLength={2}
+                                required
+                                className="opacity-0 mb-5 mt-3 bg-blue-50 rounded file:border file:px-3 file:py-1 file:mr-8 file:bg-white file:cursor-pointer"
+                                type="file" 
+                                placeholder="Imagen"
+                                name="img1"
+                                accept="image/*"
+                                onChange={(e) => handleImage(e)}
+                            />
 
-                            </div>
-                        </div>
+                        </label>
                         <div className="flex gap-5 mt-5 border border-gray-200 p-5 text-sm rounded-lg">
                             <Lightbulb size={24} className=""/>
                             

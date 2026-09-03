@@ -6,6 +6,17 @@ export async function obtenerProductos() {
   });
 }
 
+export async function obtenerProductoPorSlug(slug) {
+  return apiFetch("/api/productos/obtenerProductoPorSlug", {
+    method: "POST",
+    cache: 'no-store',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({slug}),
+  });
+}
+
 export async function obtenerProductoByNombre(data) {
   return apiFetch('/api/productos/',{
     method: 'POST',
@@ -17,10 +28,7 @@ export async function crearProducto(data) {
   return apiFetch('/api/productos/insertar', {
     method: 'POST',
     cache: 'no-store',
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data)
+    body: data
   });
 }
 

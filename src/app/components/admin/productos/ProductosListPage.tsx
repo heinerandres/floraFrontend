@@ -58,7 +58,7 @@ export const ProductosListPage = ({data}: Props) => {
 
             <TableComponent 
                 data={data} 
-                columns = {ProductosColumns}
+                columns = {ProductosColumns(router)}
                 filtro={filtro}
             />
         </div>
