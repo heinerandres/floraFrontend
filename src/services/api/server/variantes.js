@@ -7,3 +7,14 @@ export async function crearVariante(data) {
     body: data
   });
 }
+
+export async function obtenerVariantesPorSlug(data){
+  return apiFetch("/api/variantes/obtenerVariantesPorSlug", {
+    method: "POST",
+    cache: 'no-store',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+}

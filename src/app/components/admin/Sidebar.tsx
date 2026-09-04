@@ -45,7 +45,7 @@ export const Sidebar = () => {
                     <Link
                         href="/admin/productos"
                         className={`flex gap-3 p-2 px-5 rounded-sm mt-2 ${
-                            pathname === "/admin/productos"
+                            pathname.includes("/admin/productos")
                                 ? "bg-acento"
                                 : "hover:bg-secundary/10"
                         }`}

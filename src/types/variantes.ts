@@ -1,3 +1,5 @@
+import { IImagenes } from "./imagenes";
+
 export interface IVariantes {
   _id?: string;
   producto: string;
@@ -6,4 +8,5 @@ export interface IVariantes {
   stock: Number;
   presentacion: Number;
   unidadMedida: string;
+  imagenes: IImagenes[];
 }

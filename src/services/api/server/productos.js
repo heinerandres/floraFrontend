@@ -36,10 +36,7 @@ export async function editarProducto(data){
   return apiFetch('/api/productos/editar', {
     method: 'PUT',
     cache: 'no-store',
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data)
+    body: data
   });
 }
 

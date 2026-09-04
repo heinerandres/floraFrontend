@@ -42,7 +42,7 @@ export const ProductosColumns = (
         <button
           className="text-gray-600 hover:text-acento cursor-pointer flex"
           onClick={() => {
-            console.log("Editar:", producto._id);
+            router.replace(`/admin/productos/${producto.slug}`);
           }}
         >
           <Pencil size={18} strokeWidth={1.5} className="mr-2"/>

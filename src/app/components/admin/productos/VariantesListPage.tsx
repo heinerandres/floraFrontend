@@ -1,21 +1,23 @@
 'use client';
-import { Network, Plus, Search } from "lucide-react";
+import { Network, Plus, Search, Undo2 } from "lucide-react";
 import { useState } from "react";
 import { TableComponent } from "../TableComponent";
 import { IProducto } from "@/types/producto";
 import { useRouter } from "next/navigation";
 import { VariantesColumns } from "../tableColumns/variantes";
+import { IVariantes } from "@/types/variantes";
 
 type Props = {
-    producto: IProducto | null;
+    slug: string;
+    variantes: IVariantes[] | [];
 }
 
-export const VariantesListPage = ({producto}: Props) => {
+export const VariantesListPage = ({slug, variantes}: Props) => {
     const router = useRouter();
     const [filtro, setFiltro] = useState("");
 
     const handleInsertar = () => {
-        router.push(`/admin/productos/variantes/insertar/${producto?.slug}`);
+        router.push(`/admin/productos/variantes/insertar/${slug}`);
     }
 
     return (
@@ -28,7 +30,7 @@ export const VariantesListPage = ({producto}: Props) => {
                     </div>
                     <p className="text-sm text-gray-800">Gestiona el catálogo de Variantes disponibles en Floraphine.</p>
                 </div>
-                <div className="flex gap-10 ml-auto">
+                <div className="flex gap-2 ml-auto">
                     <div className="relative w-90">
                         <input
                             type="text"
@@ -45,6 +47,15 @@ export const VariantesListPage = ({producto}: Props) => {
                         />
                     </div>
                     <button 
+                        className="flex items-center px-6 py-3 border border-acento text-acento rounded-md text-sm cursor-pointer"
+                        onClick={() => {
+                            router.replace("/admin/productos");
+                        }}
+                        >
+                        <Undo2 size={20} className="mr-2"/>
+                        Regresar
+                    </button>
+                    <button 
                         className="flex items-center px-2 py-3 bg-acento text-white rounded-md text-sm mr-5 cursor-pointer"
                         onClick={() => {
                             handleInsertar();
@@ -57,7 +68,7 @@ export const VariantesListPage = ({producto}: Props) => {
             </div>
 
             <TableComponent 
-                data={producto!.variantes} 
+                data={variantes} 
                 columns = {VariantesColumns(router)}
                 filtro={filtro}
             />

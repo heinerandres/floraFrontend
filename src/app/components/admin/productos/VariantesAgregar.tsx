@@ -23,9 +23,9 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
     const router = useRouter();
 
     const [nombre, setNombre] = useState("");
-    const [precio, setPrecio] = useState(0);
-    const [cantidad, setCantidad] = useState(0);
-    const [presentacion, setPresentacion] = useState(0);
+    const [precio, setPrecio] = useState("");
+    const [cantidad, setCantidad] = useState("");
+    const [presentacion, setPresentacion] = useState("");
     const [unidadMedida, setUNidadMedida] = useState("");
     const [file1, setFile1] = useState<File | undefined>(undefined);
     const [img1, setImg1] = useState<string | undefined>(undefined);
@@ -53,9 +53,9 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
 
         formData.append("producto", producto?._id!);
         formData.append("nombre", nombre);
-        formData.append("precio", String(precio));
-        formData.append("stock", String(cantidad));
-        formData.append("presentacion", String(presentacion));
+        formData.append("precio", precio);
+        formData.append("stock", cantidad);
+        formData.append("presentacion", presentacion);
         formData.append("unidadMedida", unidadMedida);
         if(file1) formData.append("img1", file1);
 
@@ -65,9 +65,8 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
         formData.append("aromas", JSON.stringify(aromasIds));
 
         const respuesta = await crearVariante(formData);
-        if(respuesta.ok) router.replace("/admin/productos");
+        if(respuesta.ok) router.replace(`/admin/productos/variantes/${producto?.slug}`);
         else setErrorMsg(JSON.stringify(respuesta));
-
     }
 
     const handleImage = (
@@ -100,7 +99,7 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                 <div className="flex gap-10 border-b border-gray-300">
                     <div className="flex-1">
                         <div className="flex flex-col gap-2 mb-2">
-                            <label className="text-sm font-semibold">Nombre de la variante*</label>
+                            <label htmlFor="nombre" className="text-sm font-semibold">Nombre de la variante*</label>
                             <input
                                 className="p-2 border border-gray-500 rounded-lg"
                                 id="nombre"
@@ -113,33 +112,33 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                             />
                         </div>
                         <div className="flex flex-col gap-2 mb-2">
-                            <label className="text-sm font-semibold">Cantidad disponible*</label>
+                            <label htmlFor="cantidad" className="text-sm font-semibold">Cantidad disponible*</label>
                             <input
                                 className="p-2 border border-gray-500 rounded-lg"
                                 id="cantidad"
                                 name="cantidad"
-                                type="text"
+                                type="number"
                                 placeholder="Ej. 20"
                                 value={cantidad}
-                                onChange={(e) => setCantidad(Number(e.target.value))}
+                                onChange={(e) => setCantidad(e.target.value)}
                                 required
                             />
                         </div>
                         <div className="flex flex-col gap-2 mb-2">
-                            <label className="text-sm font-semibold">Presentación*</label>
+                            <label htmlFor="presentacion" className="text-sm font-semibold">Presentación*</label>
                             <input
                                 className="p-2 border border-gray-500 rounded-lg"
                                 id="presentacion"
                                 name="presentacion"
-                                type="text"
+                                type="number"
                                 placeholder="Ej. 250"
                                 value={presentacion}
-                                onChange={(e) => setPresentacion(Number(e.target.value))}
+                                onChange={(e) => setPresentacion(e.target.value)}
                                 required
                             />
                         </div>
                         <div className="flex flex-col gap-2 mb-2">
-                            <label className="text-sm font-semibold">Unidad de Medida*</label>
+                            <label htmlFor="unidadMedida" className="text-sm font-semibold">Unidad de Medida*</label>
                             <input
                                 className="p-2 border border-gray-500 rounded-lg mb-5"
                                 id="unidadMedida"
@@ -154,21 +153,21 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                     </div>
                     <div className="flex-1">
                         <div className="flex flex-col gap-2 mb-2">
-                            <label className="text-sm font-semibold">Precio*</label>
+                            <label htmlFor="precio" className="text-sm font-semibold">Precio*</label>
                             <input
                                 className="p-2 border border-gray-500 rounded-lg"
                                 id="precio"
                                 name="precio"
-                                type="text"
+                                type="number"
                                 placeholder="Ej. 1200"
                                 value={precio}
-                                onChange={(e) => setPrecio(Number(e.target.value))}
+                                onChange={(e) => setPrecio(e.target.value)}
                                 required
                             />
                         </div>
                         <h2 className="text-sm font-semibold">Imágen de la variante</h2>
                         <div className="flex justify-center mt-5 h-40">
-                            <label className="relative flex justify-center items-center border border-dashed border-acento w-40 h-45 cursor-pointer">
+                            <label htmlFor="img1" className="relative flex justify-center items-center border border-dashed border-acento w-40 h-45 cursor-pointer">
                                 {
                                     !img1 && 
                                     <div className="flex flex-col justify-center items-center">
@@ -198,7 +197,7 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                 <div className="flex gap-10 mt-5">
                     <div className="flex flex-col gap-5 flex-1">
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">Ingredientes*</label>
+                            <label htmlFor="ingredientes" className="text-sm font-semibold">Ingredientes*</label>
                             <Select instanceId="ingredientes" name="ingredientes" className="cursor-pointer" 
                                 isMulti
                                 required
@@ -244,7 +243,7 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                             </Select>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">Beneficios*</label>
+                            <label htmlFor="beneficios" className="text-sm font-semibold">Beneficios*</label>
                             <Select instanceId="beneficios" name="beneficios" className="cursor-pointer"
                                 isMulti
                                 required
@@ -291,7 +290,7 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                     </div>
                     <div className="flex flex-col gap-5 flex-1">
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">Tipos de Piel*</label>
+                            <label htmlFor="tiposPiel" className="text-sm font-semibold">Tipos de Piel*</label>
                             <Select instanceId="tiposPiel" name="tiposPiel" className="cursor-pointer"
                                 isMulti
                                 required
@@ -337,7 +336,7 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                             </Select>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">Aromas*</label>
+                            <label htmlFor="aromas" className="text-sm font-semibold">Aromas*</label>
                             <Select instanceId="aromas"  name="aromas" className="cursor-pointer"
                                 isMulti
                                 required

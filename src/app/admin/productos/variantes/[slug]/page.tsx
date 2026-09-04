@@ -1,8 +1,9 @@
 'use server';
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { VariantesListPage } from "@/app/components/admin/productos/VariantesListPage";
-import { obtenerProductoPorSlug } from "@/services/api/server/productos";
+import { obtenerVariantesPorSlug } from "@/services/api/server/variantes";
 import { IProducto } from "@/types/producto";
+import { IVariantes } from "@/types/variantes";
 
 interface Props {
     params: {
@@ -13,13 +14,14 @@ interface Props {
 
 export default async function VariantesProductoPage({ params }: Props) {
   const _params = await params;
-  let producto : IProducto | null = null;
-  
+  let variantes : IVariantes [] = [];
   let errorMsg = null;
 
-  const respuesta = await obtenerProductoPorSlug(_params.slug);
-  if(respuesta.ok) producto = respuesta.producto;
-  else errorMsg = respuesta.msg;
+  const respuesta = await obtenerVariantesPorSlug({slug: _params.slug});
+  if(respuesta.ok) variantes = respuesta.variantes;
+  else errorMsg = JSON.stringify(respuesta);
+
+  console.log(respuesta);
 
   
 
@@ -33,7 +35,8 @@ export default async function VariantesProductoPage({ params }: Props) {
             {errorMsg && <p className="text-red-500">{errorMsg}</p>}
 
             <VariantesListPage 
-                producto={producto} 
+                slug={_params.slug}
+                variantes={variantes} 
             />
 
         </div>
