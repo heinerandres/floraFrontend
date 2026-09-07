@@ -5,6 +5,7 @@ import { TableComponent } from "../TableComponent";
 import { IProducto } from "@/types/producto";
 import { ProductosColumns } from "../tableColumns/productos";
 import { useRouter } from "next/navigation";
+import { eliminarProducto } from "@/services/api/server/productos";
 
 type Props = {
     data: IProducto[] | [];
@@ -13,15 +14,23 @@ type Props = {
 export const ProductosListPage = ({data}: Props) => {
     const router = useRouter();
     const [filtro, setFiltro] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
 
     const handleInsertar = () => {
         router.push("/admin/productos/insertar");
     }
 
+    const handleEliminar = async (_id: string) => {
+        const respuesta = await eliminarProducto({_id});
+        if(respuesta.ok) router.replace("/admin/productos");
+        else setErrorMsg(JSON.stringify(respuesta));
+    }
+    
     return (
         <div className="p-5">
             <div className="flex items-center h-25 p-5">
                 <div>
+                    {errorMsg && <p className="text-red-500">{ errorMsg }</p>}
                     <div className="flex">
                         <p className="text-2xl font-semibold pr-3">Productos</p>
                         <Leaf className="text-acento mt-1"/>
@@ -58,7 +67,7 @@ export const ProductosListPage = ({data}: Props) => {
 
             <TableComponent 
                 data={data} 
-                columns = {ProductosColumns(router)}
+                columns = {ProductosColumns(router, handleEliminar)}
                 filtro={filtro}
             />
         </div>

@@ -23,6 +23,7 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
     const router = useRouter();
 
     const [nombre, setNombre] = useState("");
+    const [slug, setSlug] = useState("");
     const [precio, setPrecio] = useState("");
     const [cantidad, setCantidad] = useState("");
     const [presentacion, setPresentacion] = useState("");
@@ -53,6 +54,7 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
 
         formData.append("producto", producto?._id!);
         formData.append("nombre", nombre);
+        formData.append("slug", slug);
         formData.append("precio", precio);
         formData.append("stock", cantidad);
         formData.append("presentacion", presentacion);
@@ -77,6 +79,17 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
         setFile1(e.target.files?.[0] || undefined);
         setImg1(URL.createObjectURL(file));
     }
+
+    const generarSlug = (texto: string) => {
+        return texto
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9\s-]/g, "")
+            .trim()
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-");
+    };
 
     return (
         <div className=" flex gap-8 px-20">
@@ -107,7 +120,24 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                                 type="text"
                                 placeholder="Ej. Sérum facial Calypso"
                                 value={nombre}
-                                onChange={(e) => setNombre(e.target.value)}
+                                onChange={(e) => {
+                                    const valor = e.target.value;
+                                    setSlug(generarSlug(valor));
+                                    setNombre(valor)}
+                                }
+                                required
+                            />
+                        </div>
+                        <div className="flex flex-col gap-2 mb-2">
+                            <label htmlFor="slug" className="text-sm font-semibold">Slug*</label>
+                            <input
+                                className="p-2 border border-gray-500 rounded-lg"
+                                id="slug"
+                                name="slug"
+                                type="text"
+                                placeholder="ej. serum-facial-calypso"
+                                value={slug}
+                                readOnly
                                 required
                             />
                         </div>
@@ -124,31 +154,33 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                                 required
                             />
                         </div>
-                        <div className="flex flex-col gap-2 mb-2">
-                            <label htmlFor="presentacion" className="text-sm font-semibold">Presentación*</label>
-                            <input
-                                className="p-2 border border-gray-500 rounded-lg"
-                                id="presentacion"
-                                name="presentacion"
-                                type="number"
-                                placeholder="Ej. 250"
-                                value={presentacion}
-                                onChange={(e) => setPresentacion(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="flex flex-col gap-2 mb-2">
-                            <label htmlFor="unidadMedida" className="text-sm font-semibold">Unidad de Medida*</label>
-                            <input
-                                className="p-2 border border-gray-500 rounded-lg mb-5"
-                                id="unidadMedida"
-                                name="unidadMedida"
-                                type="text"
-                                placeholder="Ej. mg"
-                                value={unidadMedida}
-                                onChange={(e) => setUNidadMedida(e.target.value)}
-                                required
-                            />
+                        <div className="flex flex-row gap-2">
+                            <div className="flex flex-col gap-2 mb-2">
+                                <label htmlFor="presentacion" className="text-sm font-semibold">Presentación*</label>
+                                <input
+                                    className="p-2 border border-gray-500 rounded-lg"
+                                    id="presentacion"
+                                    name="presentacion"
+                                    type="number"
+                                    placeholder="Ej. 250"
+                                    value={presentacion}
+                                    onChange={(e) => setPresentacion(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2 mb-2">
+                                <label htmlFor="unidadMedida" className="text-sm font-semibold">Unidad de Medida*</label>
+                                <input
+                                    className="p-2 border border-gray-500 rounded-lg mb-5"
+                                    id="unidadMedida"
+                                    name="unidadMedida"
+                                    type="text"
+                                    placeholder="Ej. mg"
+                                    value={unidadMedida}
+                                    onChange={(e) => setUNidadMedida(e.target.value)}
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
                     <div className="flex-1">
@@ -164,6 +196,7 @@ export const VariantesAgregar = ({producto, aromas, ingredientes, beneficios, ti
                                 onChange={(e) => setPrecio(e.target.value)}
                                 required
                             />
+                            
                         </div>
                         <h2 className="text-sm font-semibold">Imágen de la variante</h2>
                         <div className="flex justify-center mt-5 h-40">

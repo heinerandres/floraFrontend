@@ -1,7 +1,7 @@
 'use server';
 import { BreadCrumb } from "@/app/components/admin/Breadcrumb";
 import { VariantesListPage } from "@/app/components/admin/productos/VariantesListPage";
-import { obtenerVariantesPorSlug } from "@/services/api/server/variantes";
+import { obtenerVariantesPorProductoSlug } from "@/services/api/server/variantes";
 import { IProducto } from "@/types/producto";
 import { IVariantes } from "@/types/variantes";
 
@@ -17,13 +17,11 @@ export default async function VariantesProductoPage({ params }: Props) {
   let variantes : IVariantes [] = [];
   let errorMsg = null;
 
-  const respuesta = await obtenerVariantesPorSlug({slug: _params.slug});
+  const respuesta = await obtenerVariantesPorProductoSlug({slug: _params.slug});
   if(respuesta.ok) variantes = respuesta.variantes;
   else errorMsg = JSON.stringify(respuesta);
 
-  console.log(respuesta);
-
-  
+  console.log(respuesta.variantes);
 
     return (
         <div className="flex-1">

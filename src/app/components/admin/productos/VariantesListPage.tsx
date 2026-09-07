@@ -6,6 +6,8 @@ import { IProducto } from "@/types/producto";
 import { useRouter } from "next/navigation";
 import { VariantesColumns } from "../tableColumns/variantes";
 import { IVariantes } from "@/types/variantes";
+import { ModalDetallesVariante } from "./ModalDetallesVariante";
+import { eliminarVariante } from "@/services/api/server/variantes";
 
 type Props = {
     slug: string;
@@ -15,15 +17,30 @@ type Props = {
 export const VariantesListPage = ({slug, variantes}: Props) => {
     const router = useRouter();
     const [filtro, setFiltro] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
+
+    const [varianteSeleccionada, setVarianteSeleccionada] =
+        useState<IVariantes | null>(null);
+
+    const handleDetalles = (variante: IVariantes) => {
+        setVarianteSeleccionada(variante);
+    };
 
     const handleInsertar = () => {
         router.push(`/admin/productos/variantes/insertar/${slug}`);
+    }
+
+    const handleEliminar = async (_id: string) => {
+        const respuesta = await eliminarVariante({_id});
+        if(respuesta.ok) router.replace(`/admin/productos/variantes/${slug}`);
+        else setErrorMsg(JSON.stringify(respuesta));
     }
 
     return (
         <div className="p-5">
             <div className="flex items-center h-25 p-5">
                 <div>
+                    {errorMsg && <p className="text-red-500">{ errorMsg }</p>}
                     <div className="flex">
                         <p className="text-2xl font-semibold pr-3">Variantes</p>
                         <Network className="text-acento mt-1"/>
@@ -69,9 +86,15 @@ export const VariantesListPage = ({slug, variantes}: Props) => {
 
             <TableComponent 
                 data={variantes} 
-                columns = {VariantesColumns(router)}
+                columns={VariantesColumns(router, handleDetalles, handleEliminar)}
                 filtro={filtro}
             />
+            {varianteSeleccionada && (
+                <ModalDetallesVariante
+                    variante={varianteSeleccionada}
+                    onClose={() => setVarianteSeleccionada(null)}
+                />
+            )}
         </div>
     )
 }

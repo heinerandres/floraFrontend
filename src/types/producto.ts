@@ -12,5 +12,6 @@ export interface IProducto {
   variantes: IVariantes[];
   precio: number;
   cantidad: number;
+  cantidadVariantes?: number;
   esDestacado: boolean;
 }

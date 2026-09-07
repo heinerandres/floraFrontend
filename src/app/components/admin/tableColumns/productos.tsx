@@ -4,9 +4,11 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { IProducto } from "@/types/producto";
 import { _base } from "@/utilities/url-imgBase";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export const ProductosColumns = (
-  router: ReturnType<typeof useRouter>
+    router: ReturnType<typeof useRouter>,
+    handleEliminar: (_id: string) => void
 ): ColumnDef<IProducto>[] => [
   {
     accessorKey: "imagen",
@@ -31,6 +33,10 @@ export const ProductosColumns = (
     accessorKey: "precio",
     header: "Precio",
     cell: ({ row }) => `$ ${row.getValue<number>("precio").toFixed(2)}`,
+  },
+  {
+    accessorKey: "cantidadVariantes",
+    header: "Variantes",
   },
   {
     id: "editar",
@@ -75,12 +81,20 @@ export const ProductosColumns = (
     header: "Eliminar",
     cell: ({ row }) => {
       const producto = row.original;
-
       return (
         <button
           className="text-gray-600 hover:text-red-500 cursor-pointer flex"
           onClick={() => {
-            console.log("Eliminar:", producto._id);
+            console.log(producto.cantidadVariantes);
+            if(producto.cantidadVariantes === 0) handleEliminar(producto._id!);
+            else {
+              Swal.fire({
+                title: "No se puede eliminar",
+                text: "Este producto tiene variantes asociadas. Debes eliminar sus variantes antes de eliminar el producto.",
+                icon: "warning",
+                confirmButtonText: "Entendido",
+            });
+            }
           }}
         >
           <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

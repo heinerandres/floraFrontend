@@ -7,7 +7,9 @@ import { useRouter } from "next/navigation";
 import { IVariantes } from "@/types/variantes";
 
 export const VariantesColumns = (
-  router: ReturnType<typeof useRouter>
+    router: ReturnType<typeof useRouter>,
+    handleDetalles: (variante: IVariantes) => void,
+    handleEliminar: (_id: string) => void
 ): ColumnDef<IVariantes>[] => [
   {
     accessorKey: "imagen",
@@ -52,7 +54,7 @@ export const VariantesColumns = (
       <button
         className="text-gray-600 hover:text-acento cursor-pointer flex"
         onClick={() => {
-          console.log("Editar:", variante._id);
+          handleDetalles(variante);
         }}
       >
         <Eye size={18} strokeWidth={1.5} className="mr-2"/>
@@ -65,13 +67,13 @@ export const VariantesColumns = (
   id: "editar",
   header: "Editar",
   cell: ({ row }) => {
-    const producto = row.original;
+    const variante = row.original;
 
     return (
       <button
         className="text-gray-600 hover:text-acento cursor-pointer flex"
         onClick={() => {
-          console.log("Editar:", producto._id);
+          router.replace(`/admin/productos/variantes/editar/${variante.slug}`);
         }}
       >
         <Pencil size={18} strokeWidth={1.5} className="mr-2"/>
@@ -90,7 +92,7 @@ export const VariantesColumns = (
       <button
         className="text-gray-600 hover:text-red-500 cursor-pointer flex"
         onClick={() => {
-          console.log("Eliminar:", variante._id);
+          handleEliminar(variante._id!);
         }}
       >
         <Trash2 size={18} strokeWidth={1.5} className="mr-2" />

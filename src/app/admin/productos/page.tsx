@@ -16,8 +16,6 @@ export default async function ProductosPage() {
   if(respuesta.ok) productos = respuesta.productos;
   else errorMsg = respuesta.msg;
 
-  console.log(productos);
-
     return (
         <div className="flex-1">
             <BreadCrumb items={[

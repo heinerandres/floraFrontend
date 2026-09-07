@@ -17,6 +17,18 @@ export async function obtenerProductoPorSlug(slug) {
   });
 }
 
+export async function obtenerProductoPorVarianteSlug(slug) {
+  return apiFetch("/api/productos/obtenerProductoPorVarianteSlug", {
+    method: "POST",
+    cache: 'no-store',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({slug}),
+  });
+}
+
+
 export async function obtenerProductoByNombre(data) {
   return apiFetch('/api/productos/',{
     method: 'POST',
