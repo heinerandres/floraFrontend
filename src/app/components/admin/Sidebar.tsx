@@ -28,7 +28,7 @@ export const Sidebar = () => {
             </button>
 
             <aside
-                className={`h-screen bg-primary text-white text-lg font-light overflow-hidden transition-all duration-300 ease-in-out ${
+                className={`h-full bg-primary text-white overflow-hidden transition-all duration-300 ${
                     sidebarOpen ? "w-75" : "w-0"
                 }`}
             >

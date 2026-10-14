@@ -23,9 +23,11 @@ export default function RootLayout({
 }>) {
   
   return (
-    <div className="flex w-screen">
+    <div className="flex items-stretch min-h-screen">
       <Sidebar />
-      {children}
+      <main className="flex-1">
+          {children}
+      </main>
     </div>
   );
 }

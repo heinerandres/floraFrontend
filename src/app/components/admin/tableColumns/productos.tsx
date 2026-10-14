@@ -30,11 +30,6 @@ export const ProductosColumns = (
     header: "Categoría",
   },
   {
-    accessorKey: "precio",
-    header: "Precio",
-    cell: ({ row }) => `$ ${row.getValue<number>("precio").toFixed(2)}`,
-  },
-  {
     accessorKey: "cantidadVariantes",
     header: "Variantes",
   },

@@ -10,8 +10,6 @@ export interface IProducto {
   categoria: ICategoria;
   imagenes: IImagenes[];
   variantes: IVariantes[];
-  precio: number;
-  cantidad: number;
   cantidadVariantes?: number;
   esDestacado: boolean;
 }

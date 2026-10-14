@@ -62,7 +62,7 @@ export default async function EditarVariantePage({ params }: Props) {
                 { label: "Variantes", href: `/admin/productos/variantes/${producto?.slug}` },
                 { label: "Editar Variante", href: `/admin/productos/variantes/editar/${_params.slug}` },
             ]}/>
-            <div className="px-20 pt-7 pb-7">
+            <div className="px-20 pt-7 pb-3">
                 {errorMsg && <p className="text-red-500">{errorMsg}</p>}
                 <div className="flex flex-col">
                     <div className="flex gap-3">

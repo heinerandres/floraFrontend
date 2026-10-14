@@ -20,8 +20,6 @@ export const ProductosEditar = ({categorias, producto}: Props) => {
     const [slug, setSlug] = useState(producto?.slug ?? "");
     const [categoria, setCategoria] = useState(producto?.categoria?._id ?? "");
     const [descripcion, setDescripcion] = useState(producto?.descripcion ?? "");
-    const [precio, setPrecio] = useState(producto?.precio ?? 0);
-    const [cantidad, setCantidad] = useState(producto?.cantidad ?? 0);
     const [esDestacado, setDestacado] = useState(producto?.esDestacado ?? false);
     const [errorMsg, setErrorMsg] = useState("");
     const [file1, setFile1] = useState<File | undefined>(undefined);
@@ -39,8 +37,6 @@ export const ProductosEditar = ({categorias, producto}: Props) => {
         formData.append("slug", slug!);
         formData.append("categoria", categoria!);
         formData.append("descripcion", descripcion!);
-        formData.append("precio", String(precio));
-        formData.append("cantidad", String(cantidad));
         formData.append("esDestacado", String(esDestacado));
         if(file1) formData.append("img1", file1);
 
@@ -81,10 +77,14 @@ export const ProductosEditar = ({categorias, producto}: Props) => {
                 <div className="flex w-full">
                     <div className="w-[42%] px-13 border-r border-gray-300">
                         <div>
-                            <p className="text-lg font-semibold">Imagen del producto*</p>
+                            <p className="text-lg font-semibold">Imagen del producto *</p>
                         </div>
                         <p className="text-sm">Agrega una imagen que represente el producto.</p>
-                        <label htmlFor="img1" className="relative flex flex-col items-center justify-center border border-dashed border-acento rounded-lg h-90 mt-5 cursor-pointer">
+                        <label htmlFor="img1" 
+                            className={`relative flex flex-col items-center justify-center rounded-lg h-90 mt-5 cursor-pointer overflow-hidden ${
+                                !img1 ? "border border-dashed border-acento" : ""
+                            }`}
+                        >
                             {
                                 !img1 && 
                                 <>
@@ -101,7 +101,7 @@ export const ProductosEditar = ({categorias, producto}: Props) => {
                             <input
                                 id="img1"
                                 minLength={2}
-                                className="opacity-0 mb-5 mt-3 bg-blue-50 rounded file:border file:px-3 file:py-1 file:mr-8 file:bg-white file:cursor-pointer"
+                                className="absolute opacity-0 mb-5 mt-3 bg-blue-50 rounded file:border file:px-3 file:py-1 file:mr-8 file:bg-white file:cursor-pointer"
                                 type="file" 
                                 placeholder="Imagen"
                                 name="img1"
@@ -153,19 +153,6 @@ export const ProductosEditar = ({categorias, producto}: Props) => {
                             <p className="text-sm text-gray-600">Se genera automáticamente a partir del nombre.</p>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="slug" className="text-sm font-semibold">Descripción *</label>
-                            <textarea
-                                className="p-2 border border-gray-500 rounded-lg h-25"
-                                id="descripcion"
-                                name="descripcion"
-                                placeholder="ej. serum-facial-calypso"
-                                value={descripcion}
-                                onChange={(e) => setDescripcion(e.target.value)}
-                                required
-                            />
-                            <p className="text-sm text-gray-600">Max. 1000 caracteres</p>
-                        </div>
-                        <div className="flex flex-col gap-2">
                             <label htmlFor="categoria" className="text-sm font-semibold">Categoría *</label>
                             <select
                                 name="categoria"
@@ -183,33 +170,20 @@ export const ProductosEditar = ({categorias, producto}: Props) => {
                                 ))}
                             </select>
                         </div>
+                        <div className="flex flex-col gap-2">
+                            <label htmlFor="slug" className="text-sm font-semibold">Descripción *</label>
+                            <textarea
+                                className="p-2 border border-gray-500 rounded-lg h-25"
+                                id="descripcion"
+                                name="descripcion"
+                                placeholder="ej. serum-facial-calypso"
+                                value={descripcion}
+                                onChange={(e) => setDescripcion(e.target.value)}
+                                required
+                            />
+                            <p className="text-sm text-gray-600">Max. 1000 caracteres</p>
+                        </div>
                         <div className="flex justify-between">
-                            <div className="flex flex-col gap-2">
-                                <label htmlFor="precio" className="text-sm font-semibold">Precio *</label>
-                                <input
-                                    className="p-2 border border-gray-500 rounded-lg"
-                                    id="precio"
-                                    name="precio"
-                                    type="number"
-                                    placeholder="Ej. 1200"
-                                    value={precio}
-                                    onChange={(e) => setPrecio(Number(e.target.value))}
-                                    required
-                                />
-                            </div>
-                            <div className="flex flex-col gap-2">
-                                <label htmlFor="cantidad" className="text-sm font-semibold">Cantidad Disponible *</label>
-                                <input
-                                    className="p-2 border border-gray-500 rounded-lg"
-                                    id="cantidad"
-                                    name="cantidad"
-                                    type="number"
-                                    placeholder="Ej. 20"
-                                    value={cantidad}
-                                    onChange={(e) => setCantidad(Number(e.target.value))}
-                                    required
-                                />
-                            </div>
                             <label className="flex gap-2 bg-acento/10 border border-gray-300 rounded-lg text-sm p-3 cursor-pointer">
                                 <input
                                     className="mb-auto mt-1 scale-110"

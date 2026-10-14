@@ -2,8 +2,8 @@ import Link from "next/link"
 
 export const Navbar = async () => {
     return (
-        <nav className="flex items-center bg-primary h-35 px-15 text-white">
-            <img className="h-[75%] mt-[-0.5%]" src="/imagenes/logo.png"></img>
+        <nav className="flex items-center bg-primary h-25 px-15 text-white">
+            <img className="h-[65%] mt-[-0.5%]" src="/imagenes/logo.png"></img>
             <div className="flex gap-20 ml-60">
                 <Link href="/admin/productos" className="">ADMINISTRACIÓN</Link>
                 <Link href="#" className="">INICIO</Link>

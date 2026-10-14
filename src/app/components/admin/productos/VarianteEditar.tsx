@@ -86,6 +86,7 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
         const formData = new FormData();
 
         formData.append("producto", producto?._id!);
+        formData.append("_id", variante?._id!);
         formData.append("nombre", nombre!);
         formData.append("slug", slug!);
         formData.append("precio", String(precio!));
@@ -125,22 +126,10 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
     };
 
     return (
-        <div className=" flex gap-8 px-20">
-            <div className="flex-1 px-10 py-5 border border-gray-200 shadow-lg rounded-lg">
-                <h2 className="font-semibold text-lg pb-5">Información del Producto</h2>
-                <h2 className="pb-1 text-sm font-semibold">Categoría</h2>
-                <p className="border border-acento/20 w-fit px-2 py-1 rounded-md text-green-700 font-medium bg-acento/20 text-sm">{producto?.categoria.nombre}</p>
-                <h2 className="pt-5 text-sm font-semibold">Nombre del producto</h2>
-                <p className="font-semibold pt-1">{producto?.nombre}</p>
-                <h2 className="pt-5 text-sm font-semibold">Descripción</h2>
-                <p className="pt-1">{producto?.descripcion}</p>
-                <div className="flex items-center justify-center w-full">
-                    <img src={ _base + producto?.imagenes[0].url} className="h-60 w-60 mt-20 rounded-lg" />
-                </div>
-                
-            </div>
-            <form onSubmit={handleSubmit} className="w-2/3 px-10 py-5 border border-gray-200 shadow-lg rounded-lg">
-                <h2 className="font-semibold text-lg pb-2">Información de la Variante</h2>
+        <div className=" flex gap-8 px-20 pb-10 w-full">
+            <form onSubmit={handleSubmit} className=" px-10 py-5 border border-gray-200 shadow-lg rounded-lg w-full">
+                <h2 className="font-semibold text-lg pb-1">Información de la Variante</h2>
+                <p className="font-semibold pt-1 pb-1"><span className="">{producto?.nombre}</span></p>
                 {errorMsg && <p className="text-red-500">{ errorMsg }</p>}
                 <div className="flex gap-10 border-b border-gray-300">
                     <div className="flex-1">
@@ -174,21 +163,37 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
                                 required
                             />
                         </div>
-                        <div className="flex flex-col gap-2 mb-2">
-                            <label htmlFor="cantidad" className="text-sm font-semibold">Cantidad disponible*</label>
-                            <input
-                                className="p-2 border border-gray-500 rounded-lg"
-                                id="cantidad"
-                                name="cantidad"
-                                type="number"
-                                placeholder="Ej. 20"
-                                value={cantidad}
-                                onChange={(e) => setCantidad(Number(e.target.value))}
-                                required
-                            />
+                        <div className="flex flex-row gap-2 w-full">
+                            <div className="flex flex-1 flex-col gap-2 mb-2">
+                                <label htmlFor="cantidad" className="text-sm font-semibold">Cantidad disponible*</label>
+                                <input
+                                    className="p-2 border border-gray-500 rounded-lg"
+                                    id="cantidad"
+                                    name="cantidad"
+                                    type="number"
+                                    placeholder="Ej. 20"
+                                    value={cantidad}
+                                    onChange={(e) => setCantidad(Number(e.target.value))}
+                                    required
+                                />
+                            </div>
+                            <div className="flex flex-1 flex-col gap-2 mb-2">
+                                <label htmlFor="precio" className="text-sm font-semibold">Precio*</label>
+                                <input
+                                    className="p-2 border border-gray-500 rounded-lg"
+                                    id="precio"
+                                    name="precio"
+                                    type="number"
+                                    placeholder="Ej. 1200"
+                                    value={precio}
+                                    onChange={(e) => setPrecio(Number(e.target.value))}
+                                    required
+                                />
+                            </div>
                         </div>
+                        
                         <div className="flex flex-row gap-2">
-                            <div className="flex flex-col gap-2 mb-2">
+                            <div className="flex flex-1 flex-col gap-2 mb-2">
                                 <label htmlFor="presentacion" className="text-sm font-semibold">Presentación*</label>
                                 <input
                                     className="p-2 border border-gray-500 rounded-lg"
@@ -201,7 +206,7 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
                                     required
                                 />
                             </div>
-                            <div className="flex flex-col gap-2 mb-2">
+                            <div className="flex flex-1 flex-col gap-2 mb-2">
                                 <label htmlFor="unidadMedida" className="text-sm font-semibold">Unidad de Medida*</label>
                                 <input
                                     className="p-2 border border-gray-500 rounded-lg mb-5"
@@ -217,23 +222,15 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
                         </div>
                     </div>
                     <div className="flex-1">
-                        <div className="flex flex-col gap-2 mb-2">
-                            <label htmlFor="precio" className="text-sm font-semibold">Precio*</label>
-                            <input
-                                className="p-2 border border-gray-500 rounded-lg"
-                                id="precio"
-                                name="precio"
-                                type="number"
-                                placeholder="Ej. 1200"
-                                value={precio}
-                                onChange={(e) => setPrecio(Number(e.target.value))}
-                                required
-                            />
-                            
-                        </div>
                         <h2 className="text-sm font-semibold">Imágen de la variante</h2>
+                        <p className="text-sm">Agrega una imagen que represente la variante.</p>
                         <div className="flex justify-center mt-5 h-40">
-                            <label htmlFor="img1" className="relative flex justify-center items-center border border-dashed border-acento w-40 h-45 cursor-pointer">
+                            <label htmlFor="img1" 
+                            className={`relative flex justify-center items-center w-60 h-[150%] cursor-pointer ${
+                                !img1 ? "border border-dashed border-acento" : ""
+                            }`}
+                            
+                            >
                                 {
                                     !img1 && 
                                     <div className="flex flex-col justify-center items-center">
@@ -247,7 +244,6 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
                                 <input
                                     id="img1"
                                     minLength={2}
-                                    required
                                     className="absolute opacity-0 mb-5 mt-3 bg-blue-50 rounded file:border file:px-3 file:py-1 file:mr-8 file:bg-white file:cursor-pointer"
                                     type="file" 
                                     placeholder="Imagen"
@@ -263,10 +259,9 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
                 <div className="flex gap-10 mt-5">
                     <div className="flex flex-col gap-5 flex-1">
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="ingredientes" className="text-sm font-semibold">Ingredientes*</label>
+                            <label htmlFor="ingredientes" className="text-sm font-semibold">Ingredientes</label>
                             <Select instanceId="ingredientes" name="ingredientes" className="cursor-pointer" 
                                 isMulti
-                                required
                                 options={ingredientes
                                     .filter((ingrediente) => ingrediente._id)
                                     .map((ingrediente) => ({
@@ -309,10 +304,9 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
                             </Select>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="beneficios" className="text-sm font-semibold">Beneficios*</label>
+                            <label htmlFor="beneficios" className="text-sm font-semibold">Beneficios</label>
                             <Select instanceId="beneficios" name="beneficios" className="cursor-pointer"
                                 isMulti
-                                required
                                 value={beneficiosSeleccionados}
                                 onChange={(opciones) => setBeneficiosSeleccionados([...opciones])}
                                 options={beneficios
@@ -356,10 +350,9 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
                     </div>
                     <div className="flex flex-col gap-5 flex-1">
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="tiposPiel" className="text-sm font-semibold">Tipos de Piel*</label>
+                            <label htmlFor="tiposPiel" className="text-sm font-semibold">Tipos de Piel</label>
                             <Select instanceId="tiposPiel" name="tiposPiel" className="cursor-pointer"
                                 isMulti
-                                required
                                 value={tiposPielSeleccionados}
                                 onChange={(opciones) => setTiposPielSeleccionados([...opciones])}
                                 options={tiposPiel
@@ -402,10 +395,9 @@ export const VarianteEditar = ({producto, variante, aromas, ingredientes, benefi
                             </Select>
                         </div>
                         <div className="flex flex-col gap-2">
-                            <label htmlFor="aromas" className="text-sm font-semibold">Aromas*</label>
+                            <label htmlFor="aromas" className="text-sm font-semibold">Aromas</label>
                             <Select instanceId="aromas"  name="aromas" className="cursor-pointer"
                                 isMulti
-                                required
                                 value={aromasSeleccionados}
                                 onChange={(opciones) => setAromasSeleccionados([...opciones])}
                                 options={aromas
