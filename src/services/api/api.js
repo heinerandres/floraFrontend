@@ -2,7 +2,7 @@ export async function apiFetch(endpoint, options = {}) {
   //const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${endpoint}`, {
 
   try{
-    const res = await fetch(`https://florabackend-d8he.onrender.com/${endpoint}`, {
+    const res = await fetch(`https://florabackend-d8he.onrender.com${endpoint}`, {
     /* const res = await fetch(`https://ecommerce-backend-3c9u.onrender.com${endpoint}`, { */
       ...options,
       headers: {
